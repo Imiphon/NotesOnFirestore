@@ -14,6 +14,6 @@ export const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig); //don't needed with @angulare/fire
+const app = initializeApp(firebaseConfig); //we don't need it with @angulare/fire
 
 
