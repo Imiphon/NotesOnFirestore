@@ -25,6 +25,7 @@
        </div>
     </div>
     <div> 
-        <app-note *ngFor="let note of this.noteService.items$ | async" [note]="note">Note in note-list</app-note> 
+       <div>Hello World</div>
+       <app-note *ngFor="let note of this.noteService.items$ | async" [note]="note">Note in note-list</app-note> 
     </div>
 </div>
