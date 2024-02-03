@@ -8,12 +8,12 @@ import { NoteListService } from '../firebase-services/note-list.service'
   styleUrls: ['./note-list.component.scss']
 })
 export class NoteListComponent {
-  noteList: Note[] = [];
+  note: Note[] = [];
   favFilter: "all" | "fav" = "all";
   status: "notes" | "trash" = "notes";
 
   constructor(public noteService: NoteListService) {
-    this.noteList = this.getDummyData()
+    this.note = this.getDummyData();
   }
 
   changeFavFilter(filter: "all" | "fav") {
@@ -29,10 +29,8 @@ export class NoteListComponent {
     }
   }
 
-
-
-
   getDummyData(): Note[] {
+    debugger;
     return [
       {
         id: "21sasd561dd4sdf",

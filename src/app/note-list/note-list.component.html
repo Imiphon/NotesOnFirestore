@@ -24,7 +24,7 @@
             </button>
        </div>
     </div>
-    <div> <!-- FOR LATER: <app-note *ngFor="let note of this.noteService.items$ | async"> -->
-        <app-note >Note in note-list</app-note> <!--TAKEN OUT FROM TAG: [note]="note"-->
+    <div> 
+        <app-note *ngFor="let note of this.noteService.items$ | async" [note]="note">Note in note-list</app-note> 
     </div>
 </div>
