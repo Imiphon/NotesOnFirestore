@@ -8,7 +8,7 @@ import { NoteListComponent } from './note-list/note-list.component';
 import { NoteComponent } from './note-list/note/note.component';
 import { FormsModule } from '@angular/forms';
 import { AddNoteDialogComponent } from './add-note-dialog/add-note-dialog.component';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { initializeApp, getApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 //import { firebaseConfig } from './../environments/environment';
 //import { environment } from './../environments/environment';
