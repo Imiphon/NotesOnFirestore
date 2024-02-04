@@ -12,7 +12,6 @@ export class NoteComponent {
   edit = false;
   hovered = false;
   
-  //in note-list.component.ts ist noteservice 'public'
   constructor(private noteService: NoteListService){}
 
   changeMarkedStatus(){
