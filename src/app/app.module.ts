@@ -11,7 +11,7 @@ import { AddNoteDialogComponent } from './add-note-dialog/add-note-dialog.compon
 import { initializeApp, getApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 //import { firebaseConfig } from './../environments/environment';
-//import { environment } from './../environments/environment';
+import { environment } from './../environments/environment'; 
 
 
 
@@ -29,8 +29,8 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
     AppRoutingModule,
     FormsModule,
     //instat of firebaseConfig directly adress it's possible
-    //provideFirebaseApp(() => initializeApp(environment.firebase),
-   provideFirebaseApp(() => initializeApp({"projectId":"danotes-a93f2","appId":"1:190961739929:web:2d080fac5830e59cefb008","storageBucket":"danotes-a93f2.appspot.com","apiKey":"AIzaSyDgzEeL_C3MnyWvRAt1wdnRfWyC220q1u8","authDomain":"danotes-a93f2.firebaseapp.com","messagingSenderId":"190961739929"})),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+   // provideFirebaseApp(() => initializeApp({"projectId":"danotes-a93f2","appId":"1:190961739929:web:2d080fac5830e59cefb008","storageBucket":"danotes-a93f2.appspot.com","apiKey":"AIzaSyDgzEeL_C3MnyWvRAt1wdnRfWyC220q1u8","authDomain":"danotes-a93f2.firebaseapp.com","messagingSenderId":"190961739929"})),
     provideFirestore(() => getFirestore()),
   ],
   providers: [],
