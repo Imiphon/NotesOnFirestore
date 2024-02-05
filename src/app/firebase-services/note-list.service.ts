@@ -44,19 +44,17 @@ export class NoteListService {
     return onSnapshot(this.getTrashRef(), (list) => {
       this.trashNotes = [];
       list.forEach(element => {
-        console.log('onSnapshot mit Initialisierung', element);
-        console.log('onSnapshot mit id des elemts', element.id);
-        console.log('onSnapshot mit data(), ergibt gleiches Ergebnis wie die collectionData()', element.data());
-        console.log('onSnapshot mit setNoteObject()', this.setNoteObject(element.data(), element.id));
+        this.trashNotes.push(this.setNoteObject(element.data(), element.id));
       })
     });
   }
 
   subNotesList() {
     return onSnapshot(this.getNotesRef(), (list) => {
+      this.normalNotes = [];
       list.forEach(element => {
-        console.log('onSnapshot mit Initialisierung', element);
-        console.log('onSnapshot mit id des elemts', element.id);
+        this.normalNotes.push(this.setNoteObject(element.data(), element.id));
+
         console.log('onSnapshot mit data(), ergibt gleiches Ergebnis wie die collectionData()', element.data());
         console.log('onSnapshot mit setNoteObject()', this.setNoteObject(element.data(), element.id));
       })
@@ -69,7 +67,7 @@ export class NoteListService {
       type: obj.type || 'note',
       title: obj.title || '',
       content: obj.content || '',
-      marked: obj.marked || '',
+      marked: obj.marked || false,
     }
   }
 
