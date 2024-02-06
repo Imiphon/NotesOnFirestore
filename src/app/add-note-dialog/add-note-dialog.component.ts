@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
+import { NoteListService } from '../firebase-services/note-list.service';
 import { Note } from '../interfaces/note.interface';
-import { NoteListService } from '../firebase-services/note-list.service'
 
 @Component({
   selector: 'app-add-note-dialog',
@@ -21,6 +21,14 @@ export class AddNoteDialogComponent {
   }
 
   addNote(){
+    let note: Note = {
+      //id is coming automaticly
+      type: "note",
+      title: this.title,
+      content: this.description,
+      marked: false,
+    }
+    this.noteService.addNote(note)
     //beachte das closeDialog() zum Schluss kommt, denn es leert die Variablen
     this.closeDialog();
   }

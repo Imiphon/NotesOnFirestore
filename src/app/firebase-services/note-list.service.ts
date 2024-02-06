@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Note } from '../interfaces/note.interface'
-import { Firestore, collection, doc, collectionData, onSnapshot } from '@angular/fire/firestore';
+import { Firestore, collection, doc, collectionData, onSnapshot, addDoc } from '@angular/fire/firestore';
 //import { Observable } from 'rxjs';
 
 @Injectable({
@@ -28,16 +28,29 @@ export class NoteListService {
     });
      */
 
-    //    // Initialisierung des Observables mit Daten aus der Firestore-Sammlung 'notes'
-    //    this.items$ = collectionData(this.getNotesRef());
-    //    // Abonnieren des Observables, um auf Änderungen in der 'notes'-Sammlung zu reagieren
-    //    this.items = this.items$.subscribe((list) => {
-    //      // Iteration über jede empfangene Notiz und Ausführung einer Aktion (hier: Ausgabe in der Konsole)
-    //      list.forEach(element => {
-    //        console.log('Initialisierung des Observables mit collactionData()', element);
-    //      })
-    //    });
+    /**
+         // Dies ist eine ASYNC PIPE 
+         //Initialisierung des Observables mit Daten aus der Firestore-Sammlung 'notes'
+        this.items$ = collectionData(this.getNotesRef());
+        // Abonnieren des Observables, um auf Änderungen in der 'notes'-Sammlung zu reagieren
+        this.items = this.items$.subscribe((list) => {
+          // Iteration über jede empfangene Notiz und Ausführung einer Aktion (hier: Ausgabe in der Konsole)
+          list.forEach(element => {
+            console.log('Initialisierung des Observables mit collactionData()', element);
+          })
+        });
+     */
 
+  }
+  //note is coming from add.note-dialog.component.ts
+  async addNote(item: Note){
+    //bestimmt, welches item (z.B. json) in welche collection kommt
+    //das catch, um fehler vor dem user abzufangen
+    await addDoc(this.getNotesRef(), item ).catch(
+      (err) => { console.log(err)}
+      ).then(
+      (docRef) => { console.log('id of document', docRef?.id)}
+     )
   }
 
   subTrashList() {
