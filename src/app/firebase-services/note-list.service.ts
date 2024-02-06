@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Note } from '../interfaces/note.interface'
-import { Firestore, collection, doc, collectionData, onSnapshot, addDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, collectionData, onSnapshot, addDoc, updateDoc } from '@angular/fire/firestore';
 //import { Observable } from 'rxjs';
 
 @Injectable({
@@ -43,14 +43,49 @@ export class NoteListService {
 
   }
   //note is coming from add.note-dialog.component.ts
-  async addNote(item: Note){
+  async addNote(item: Note) {
     //bestimmt, welches item (z.B. json) in welche collection kommt
     //das catch, um fehler vor dem user abzufangen
-    await addDoc(this.getNotesRef(), item ).catch(
-      (err) => { console.log(err)}
-      ).then(
-      (docRef) => { console.log('id of document', docRef?.id)}
-     )
+    await addDoc(this.getNotesRef(), item).catch(
+      (err) => { console.log(err) }
+    ).then(
+      (docRef) => { console.log('id of document', docRef?.id) }
+    )
+  }
+
+  async updateNote(note: Note) {
+    //updateDoc needs two arguments
+    if (note.id) {
+      let docRef = this.getSingleDocRef(this.getColIdFromNote(note), note.id);
+      await updateDoc(docRef, this.getCleanJson(note)).catch(
+        (err) => {
+          console.log(err);
+        }
+      ).then(() => { console.log('any then-stuff') });
+    }
+
+  }
+
+  getCleanJson(note: Note) {
+    return {
+      type: note.type,
+      title: note.title,
+      content: note.content,
+      marked: note.marked,
+    }
+  }
+
+  /**
+   * 'note' to 'notes' for right collection-name in firestore database
+   * @param note 
+   * @returns string 
+   */
+  getColIdFromNote(note: Note) {
+    if (note.type == 'note') {
+      return 'notes'
+    } else {
+      return 'trash'
+    }
   }
 
   subTrashList() {
@@ -92,18 +127,21 @@ export class NoteListService {
 
   }
 
-  // Methode zur Erstellung eines Referenzobjekts für die 'notes'-Sammlung in Firestore
+  // returns content of notes in Firestore Collection
   getNotesRef() {
     return collection(this.firestore, 'notes');
   }
 
-  // Methode zur Erstellung eines Referenzobjekts für die 'trash'-Sammlung in Firestore
+  // returns content of trash in Firestore Collection
   getTrashRef() {
     return collection(this.firestore, 'trash');
   }
 
-  // Methode zur Erstellung eines Referenzobjekts für ein einzelnes Dokument innerhalb einer spezifischen Sammlung
-  // basierend auf der Sammlungs-ID (`colId`) und der Dokument-ID (`docId`)
+  /** 
+   * @param colId collection-name in firestore database (notes or trash)
+   * @param docId 
+   * @returns 
+   */
   getSingleDocRef(colId: string, docId: string) {
     return doc(collection(this.firestore, colId), docId);
   }
