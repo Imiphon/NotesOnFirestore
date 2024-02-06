@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Note } from '../interfaces/note.interface'
-import { Firestore, collection, doc, collectionData, onSnapshot, addDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, collectionData, onSnapshot, addDoc, updateDoc, deleteDoc } from '@angular/fire/firestore';
 //import { Observable } from 'rxjs';
 
 @Injectable({
@@ -42,17 +42,24 @@ export class NoteListService {
      */
 
   }
-  //note is coming from add.note-dialog.component.ts
-  async addNote(item: Note) {
-    //bestimmt, welches item (z.B. json) in welche collection kommt
-    //das catch, um fehler vor dem user abzufangen
-    await addDoc(this.getNotesRef(), item).catch(
+
+  //note is coming from add.note-dialog.component.ts 
+  async addNote(item: Note, colId: string) {
+    // Entscheidet, in welche Sammlung (notes oder trash) das Dokument hinzugefügt wird
+    let targetCollectionRef;
+    if (colId === 'trash') {
+      targetCollectionRef = this.getTrashRef(); // Referenz auf die trash-Sammlung
+    } else {
+      targetCollectionRef = this.getNotesRef(); // Standardmäßig Referenz auf die notes-Sammlung
+    }
+  
+    // Fügt das Dokument der ausgewählten Sammlung hinzu und fängt mögliche Fehler ab
+    await addDoc(targetCollectionRef, item).catch(
       (err) => { console.log(err) }
     ).then(
-      (docRef) => { console.log('id of document', docRef?.id) }
-    )
+      (docRef) => { console.log('Document added with ID:', docRef?.id) }
+    );
   }
-
   async updateNote(note: Note) {
     //updateDoc needs two arguments
     if (note.id) {
@@ -64,6 +71,13 @@ export class NoteListService {
       ).then(() => { console.log('any then-stuff') });
     }
 
+  }
+
+  async deleteNote(colId: 'notes' | 'trash', docId: string){
+    await deleteDoc(this.getSingleDocRef(colId, docId)).catch(
+      (err) => {console.log(err);
+      } //.then {} not neccessary yet
+    );
   }
 
   getCleanJson(note: Note) {
