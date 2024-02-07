@@ -18,8 +18,13 @@ export class NoteListComponent {
     //this.noteList = this.getDummyData()
   }
 
+  
+
   // is called in note-list.component.html
   getList(): Note[] {
+    if (this.favFilter === 'fav') {
+      return this.noteService.normalNotes.filter(note => note.marked);
+    }
     return this.noteService.normalNotes;
   }
 
