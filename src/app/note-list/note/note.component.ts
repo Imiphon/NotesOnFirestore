@@ -40,6 +40,7 @@ export class NoteComponent {
   moveToTrash() {
     if (this.note.id) {
       if(this.note.type == 'trash'){
+        this.noteService.addNote(this.note, 'trash');
         this.noteService.deleteNote('notes', this.note.id);
       } else {
         this.note.type = 'trash'; //changes string from 'notes' to 'trash' in firebase collection
@@ -47,14 +48,17 @@ export class NoteComponent {
       delete this.note.id; 
       this.noteService.addNote(this.note, 'trash');
       this.noteService.deleteNote('notes', docId); //deletes this.notes in notes-collection
-      }
-      
-      
+      }  
     }
   }
 
   moveToNotes() {
-    this.note.type = 'note';
+
+    if (this.note.id) {
+      this.note.type = 'note'
+      this.noteService.addNote(this.note, 'note'); 
+      this.noteService.deleteNote('trash', this.note.id); 
+    }
   }
 
   deleteNote() {

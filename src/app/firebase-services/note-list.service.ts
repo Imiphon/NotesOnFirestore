@@ -45,21 +45,22 @@ export class NoteListService {
 
   //note is coming from add.note-dialog.component.ts 
   async addNote(item: Note, colId: string) {
-    // Entscheidet, in welche Sammlung (notes oder trash) das Dokument hinzugefügt wird
+    // sends notes or trash to right collection
     let targetCollectionRef;
     if (colId === 'trash') {
-      targetCollectionRef = this.getTrashRef(); // Referenz auf die trash-Sammlung
+      targetCollectionRef = this.getTrashRef();
     } else {
-      targetCollectionRef = this.getNotesRef(); // Standardmäßig Referenz auf die notes-Sammlung
+      targetCollectionRef = this.getNotesRef();
     }
-  
-    // Fügt das Dokument der ausgewählten Sammlung hinzu und fängt mögliche Fehler ab
+
+    // set doc to right target, catch error if neccessary
     await addDoc(targetCollectionRef, item).catch(
       (err) => { console.log(err) }
     ).then(
       (docRef) => { console.log('Document added with ID:', docRef?.id) }
     );
   }
+
   async updateNote(note: Note) {
     //updateDoc needs two arguments
     if (note.id) {
@@ -73,9 +74,10 @@ export class NoteListService {
 
   }
 
-  async deleteNote(colId: 'notes' | 'trash', docId: string){
+  async deleteNote(colId: 'notes' | 'trash', docId: string) {
     await deleteDoc(this.getSingleDocRef(colId, docId)).catch(
-      (err) => {console.log(err);
+      (err) => {
+        console.log(err);
       } //.then {} not neccessary yet
     );
   }
